@@ -20,15 +20,30 @@ contract SmartCrowdFunding is Crowdsale, TimedCrowdsale, MintedCrowdsale, PostDe
     PostDeliveryCrowdsale()
     Crowdsale(rate, wallet, token)
     public
-    {}
+    payable
+    {
+        owner = msg.sender;
+    }
+    
+    address owner;
+    
+    modifier onlyOwner {
+        require(owner == msg.sender, "Only owner can call this function");
+        _;
+    }
 }
 
 contract SmartCrowdFundingDeployer {
-    constructor()
+    constructor(
+        uint256 rate,
+        uint256 openingTime,
+        uint256 closingTime
+    )
     public
+    payable
     {
         CrowdCoin token = new CrowdCoin("CrowdCoin","CRC", 18);
-        Crowdsale SCF = new SmartCrowdFunding(100, msg.sender, token, now, now + 2629743);
+        Crowdsale SCF = new SmartCrowdFunding(rate, msg.sender, token, openingTime, closingTime);
         token.addMinter(address(SCF));
         token.renounceMinter();
     }
