@@ -8,10 +8,19 @@ contract Voting {
         bool vote;
     }
     
+    CrowdCoin token;
+    bool started;
     uint numVoters;
     mapping(uint => Voter) voters;
     
+    function startVote(address _token) public {
+        token = CrowdCoin(_token);
+        started = true;
+    }
+    
     function vote(bytes32 uid, bool voteFor) public {
+        require(started);
+        
         // checks if the struct exists for that candidate
         uint voterID = numVoters++; //voterID is the return variable
         voters[voterID] = Voter(uid, voteFor);
