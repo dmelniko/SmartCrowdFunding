@@ -1,11 +1,11 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.0;
 
 import './CrowdCoin.sol';
 
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
+import 'openzeppelin-solidity/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol';
 
 contract SmartCrowdFunding is Crowdsale, TimedCrowdsale, MintedCrowdsale, PostDeliveryCrowdsale {
     constructor(

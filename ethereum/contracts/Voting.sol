@@ -1,4 +1,6 @@
-pragma solidity ^0.4.18;
+pragma solidity ^0.5.0;
+
+import "./CrowdCoin.sol";
 
 contract Voting {
 

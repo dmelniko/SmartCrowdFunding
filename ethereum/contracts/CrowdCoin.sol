@@ -1,8 +1,8 @@
-pragma solidity ^0.5.2;
+pragma solidity ^0.5.0;
 
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol';
-import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
+import 'openzeppelin-solidity/contracts/token/ERC20/ERC20.sol';
+import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol';
+import 'openzeppelin-solidity/contracts/token/ERC20/ERC20Mintable.sol';
 
 /**
  * ERC20 token which is detailed and mintable
