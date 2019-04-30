@@ -1,15 +1,15 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.2;
 
 import './CrowdCoin.sol';
 
-import 'openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
-import 'openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
-import 'openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
-import 'openzeppelin-solidity/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol';
+import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol';
+import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol';
+import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/validation/TimedCrowdsale.sol';
+import 'github.com/OpenZeppelin/openzeppelin-solidity/contracts/crowdsale/distribution/PostDeliveryCrowdsale.sol';
 
 contract SmartCrowdFunding is Crowdsale, TimedCrowdsale, MintedCrowdsale, PostDeliveryCrowdsale {
     constructor(
-        uint256 rate,   // in TKNbits, 400 for 
+        uint256 rate,   // in TKNbits, 400 for
         address payable wallet,
         CrowdCoin token,
         uint256 openingTime,
@@ -24,9 +24,9 @@ contract SmartCrowdFunding is Crowdsale, TimedCrowdsale, MintedCrowdsale, PostDe
     {
         owner = msg.sender;
     }
-    
+
     address owner;
-    
+
     modifier onlyOwner {
         require(owner == msg.sender, "Only owner can call this function");
         _;
