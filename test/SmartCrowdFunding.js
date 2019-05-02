@@ -19,7 +19,7 @@ beforeEach(async () => {
   crowdCoin = await new web3.eth.Contract(
       abiCrowdCoin
   )
-      .deploy({ data: bytecodeCrowdCoin.object,arguments:['coin','CN','8'] })
+      .deploy({ data: bytecodeCrowdCoin.object,arguments:['CrowdCoin','CC','4'] })
       .send({ from: accounts[0], gas: "2000000" });
 });
 
