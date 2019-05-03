@@ -10,7 +10,10 @@ class App extends Component {
     ether:'',
     balance:'0',
     message: "",
-    wei:'0'
+    wei:'0',
+    vote:'select',
+    voteResult: 'still voting'
+
   };
 
 
@@ -56,9 +59,60 @@ class App extends Component {
         let wei =await SmartCrowdFunding.methods.weiRaised().call({
             from: accounts[0]
         });
-        this.setState({wei:web3.utils.fromWei(wei, 'wei')});
+        this.setState({wei:web3.utils.fromWei(wei, 'ether')});
         this.setState({ message: 'Success' });
     };
+
+    startVote = async event => {
+        event.preventDefault();
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        await SmartCrowdFunding.methods.startVoting(this.state.percent).send({
+            from: accounts[0]
+        });
+
+        this.setState({ message: 'Success' });
+    };
+
+    vote = async event =>  {
+        event.preventDefault();
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        await SmartCrowdFunding.methods.vote(this.state.vote).send({
+            from: accounts[0]
+        });
+        this.setState({ message: 'Success' });
+    };
+
+    endVote = async () => {
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        await SmartCrowdFunding.methods.endVote().send({
+            from: accounts[0]
+        });
+
+        this.setState({ message: 'Success' });
+    };
+
+    getVoteResults = async () => {
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        let result =await SmartCrowdFunding.methods.getVoteResults().call({
+            from: accounts[0]
+        });
+        if(result){
+            this.setState({ voteResult: 'Majority Agreed' });
+        }
+        else{
+            this.setState({ voteResult: 'Majority Disagreed' });
+        }
+        this.setState({ message: 'Success' });
+    };
+
   render() {
     return (<div>
             <h2>
@@ -98,6 +152,41 @@ class App extends Component {
             <h4>View funds raised so far </h4>
             <button onClick={this.getWei}>View </button>
             <p>So far we raised {this.state.wei} ether</p>
+
+            <br/>
+            <form onSubmit={this.startVote}>
+                <h4>Start Voting</h4>
+                <div>
+                    <label>Enter percent of people that need to agree (1-99)  </label>
+                    <input
+                        value={this.state.percent}
+                        onChange={event => this.setState({ percent: event.target.value })}
+                    />
+                    <button>Enter</button>
+                </div>
+
+            </form>
+
+            <br/>
+
+            <h4>Send Your Vote</h4>
+            <select value={this.state.vote}
+                    onChange={this.vote}
+            >
+                <option value="select">Select</option>
+                <option value="true">Agree</option>
+                <option value="false">Disagree</option>
+            </select>
+            <br/>
+
+            <h4>End Voting</h4>
+            <button onClick={this.endVote}>End Voting </button>
+            <br/>
+
+            <h4>View Voting Results</h4>
+            <button onClick={this.getVoteResults}>View</button>
+            <h5>Majority voters : {this.state.voteResult} </h5>
+            <br/>
 
             <h1>{this.state.message}</h1>
         </div>

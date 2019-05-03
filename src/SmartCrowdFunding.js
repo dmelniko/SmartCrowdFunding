@@ -1,20 +1,38 @@
 import web3 from "./web3";
 
-const address = "0x66219330fA8fCbdb1905c96efc9c519E42e55a5c";
+const address = "0x35c4F194dAC1E616D2Cc54BdB39117EFdC836433";
 
 const abi =[
     {
-        "constant": true,
+        "constant": false,
         "inputs": [],
-        "name": "crowdSaleInstance",
-        "outputs": [
+        "name": "buyTokens",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
             {
-                "name": "",
-                "type": "address"
+                "name": "rate",
+                "type": "uint256"
             }
         ],
+        "name": "createCrowdSale",
+        "outputs": [],
         "payable": false,
-        "stateMutability": "view",
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [],
+        "name": "endVote",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
@@ -32,13 +50,55 @@ const abi =[
         "type": "function"
     },
     {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "agree",
+                "type": "bool"
+            }
+        ],
+        "name": "vote",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "constant": true,
         "inputs": [],
-        "name": "weiRaised",
+        "name": "crowdSaleInstance",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getMyBalance",
         "outputs": [
             {
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getVoteResults",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
             }
         ],
         "payable": false,
@@ -60,23 +120,9 @@ const abi =[
         "type": "function"
     },
     {
-        "constant": false,
-        "inputs": [
-            {
-                "name": "agree",
-                "type": "bool"
-            }
-        ],
-        "name": "vote",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
         "constant": true,
         "inputs": [],
-        "name": "getMyBalance",
+        "name": "numDisagree",
         "outputs": [
             {
                 "name": "",
@@ -121,34 +167,6 @@ const abi =[
         "type": "function"
     },
     {
-        "constant": false,
-        "inputs": [],
-        "name": "endVote",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "numDisagree",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "constant": true,
         "inputs": [],
         "name": "voteStarted",
@@ -163,26 +181,17 @@ const abi =[
         "type": "function"
     },
     {
-        "constant": false,
+        "constant": true,
         "inputs": [],
-        "name": "buyTokens",
-        "outputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "function"
-    },
-    {
-        "constant": false,
-        "inputs": [
+        "name": "weiRaised",
+        "outputs": [
             {
-                "name": "rate",
+                "name": "",
                 "type": "uint256"
             }
         ],
-        "name": "createCrowdSale",
-        "outputs": [],
         "payable": false,
-        "stateMutability": "nonpayable",
+        "stateMutability": "view",
         "type": "function"
     }
 ];

@@ -64,16 +64,24 @@ contract SCF {
 
     }
 
-    //return true if majority agreed on the vote
-    function endVote() public returns (bool){
+    function endVote() public{
         require(msg.sender==voteOwner, "only vote owner can end vote");
         voteStarted=false;
-        uint result = 100*(numAgree/numDisagree);
-        if(result>percentToWin){
-            return true; //if majority agreed
+    }
+
+    function getVoteResults() public view returns (bool){
+        require(!voteStarted);
+        if(numDisagree==0){
+            return true;
         }
         else{
-            return false;
+            uint result = 100*(numAgree/numDisagree);
+            if(result>percentToWin){
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 
     }
