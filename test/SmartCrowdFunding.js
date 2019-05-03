@@ -4,26 +4,29 @@ const Web3 = require("web3");
 const provider = ganache.provider();
 const web3 = new Web3(provider);
 
-const compiledSmartCrowdFunding = require("../ethereum/build/SmartCrowdFunding.json");
+const abiCrowdCoin = require("../ethereum/build/CrowdCoinABI.json");
+const bytecodeCrowdCoin = require("../ethereum/build/CrowdCoinBytecode.json");
+//console.log(typeof abiCrowdCoin);
+//console.log(bytecodeCrowdCoin.object);
 
 let accounts;
-let smartCrowdFunding;
+let crowdCoin;
 // each "it" block will execute a clean slate deployment of the contract with automatic "beforeEach" invocation
 beforeEach(async () => {
   accounts = await web3.eth.getAccounts();
-  // console.log(accounts);
 
-  smartCrowdFunding = await new web3.eth.Contract(
-      JSON.parse(compiledSmartCrowdFunding.interface)
+
+  crowdCoin = await new web3.eth.Contract(
+      abiCrowdCoin
   )
-      .deploy({ data: compiledSmartCrowdFunding.bytecode })
+      .deploy({ data: bytecodeCrowdCoin.object,arguments:['CrowdCoin','CC','4'] })
       .send({ from: accounts[0], gas: "2000000" });
 });
 
 // The test suite is given in a DESCRIBE function calling multiple IT functions as tests
 
-describe("Trojan Secret Contract", () => {
-  it("contract can be deployed", () => {
-    assert.ok(smartCrowdFunding.options.address);
+describe("Crowd Coin", () => {
+  it("Crowd Coin contract can be deployed", () => {
+    assert.ok(crowdCoin.options.address);
   });
 });
