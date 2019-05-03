@@ -30,7 +30,7 @@ const deployCrowdCoin = async () => {
     .send({ gas: "6000000", from: accounts[0] });
 
   console.log("Crowd Funding Contract deployed to rinkeby at", result.options.address);
-  console.log("Copy this contract address into the address variable in file CrowdCoin.js");
+  console.log("Copy this contract address into the address variable in file SmartCRowdFunding.js");
 };
 
 deployCrowdCoin();

@@ -1,104 +1,108 @@
 import React, { Component } from "react";
 import web3 from "./web3";
-import trojanSecret from "./SmartCrowdFunding";
+import SmartCrowdFunding from "./SmartCrowdFunding";
 import { Container, Card } from "semantic-ui-react";
 
 
 class App extends Component {
   state = {
     value: "",
-    message: ""
+    ether:'',
+    balance:'0',
+    message: "",
+    wei:'0'
   };
 
-  onSubmit = async event => {
-    event.preventDefault();
-    const accounts = await web3.eth.getAccounts();
-    this.setState({
-      message: "Waiting for blockchain transaction to complete..."
-    });
 
-    await trojanSecret.methods.registerTrojan(this.state.value).send({
-      from: accounts[0]
-    });
+    newSCF = async event => {
+        event.preventDefault();
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
 
-    this.setState({ message: "you have been registered as a new Trojan!" });
-  };
+        await SmartCrowdFunding.methods.createCrowdSale(this.state.value).send({
+            from: accounts[0]
+        });
 
+        this.setState({ message: 'Success' });
+    };
+
+    buyToken = async event => {
+        event.preventDefault();
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        await SmartCrowdFunding.methods.buyTokens().send({
+            from: accounts[0], value: web3.utils.toWei(this.state.ether, 'ether')
+        });
+
+        this.setState({ message: 'Success' });
+    };
+
+    getBalance = async () => {
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        let balance =await SmartCrowdFunding.methods.getMyBalance().call({
+            from: accounts[0]
+        });
+        this.setState({balance:balance});
+        this.setState({ message: 'Success' });
+    };
+
+    getWei = async () => {
+        const accounts = await web3.eth.getAccounts();
+        this.setState({ message: 'Waiting on transaction...' });
+
+        let wei =await SmartCrowdFunding.methods.weiRaised().call({
+            from: accounts[0]
+        });
+        this.setState({wei:web3.utils.fromWei(wei, 'wei')});
+        this.setState({ message: 'Success' });
+    };
   render() {
-    return (
-      <Container>
-        <TopBar />
-        <h4>
-          <p>This is a game deployed to the Rinkeby Blockchain.</p>
-          <p>
-            Actions to retrieve information should operate quickly.
-            <br />
-            But please be aware, actions that push information to the blockchain may
-            take about 15 seconds to complete.
-          </p>
-        </h4>
+    return (<div>
+            <h2>
+                <p>This is a Smart Crowd Funding platform. </p>
 
-        <div>
-          <Card.Group>
-            <Card color="blue" header="Register to Play">
-              <Card.Content>
-                <h4>
-                  You must register a user name before you can play the game.
-                </h4>
-                <Register />
-              </Card.Content>
-            </Card>
+            </h2>
+            <form onSubmit={this.newSCF}>
+                <h4>Create new crowd funding</h4>
+                <div>
+                    <label>Enter how many token per ether  </label>
+                    <input
+                        value={this.state.value}
+                        onChange={event => this.setState({ value: event.target.value })}
+                    />
+                    <button>Enter</button>
+                </div>
 
-            <Card color="red" header="Close your account">
-              <Card.Content>
-                <h4>We will surely miss you!</h4>
-                <br />
-                <Unregister />
-              </Card.Content>
-            </Card>
+            </form>
+            <br/>
+            <form onSubmit={this.buyToken}>
+                <h4>Buy Tokens</h4>
+                <div>
+                    <label>Enter how much ether to spend  </label>
+                    <input
+                        value={this.state.ether}
+                        onChange={event => this.setState({ ether: event.target.value })}
+                    />
+                    <button>Enter</button>
+                </div>
 
-            <Card color="green" header="Create a Secret">
-              <Card.Content>
-                <h4>Create a secret message!</h4>
-                <br />
-                <CreateSecret />
-              </Card.Content>
-            </Card>
+            </form>
 
-            <Card color="orange" header="Unlock a Secret">
-              <Card.Content>
-                <h4>Pay 1 ether to unlock a secret message!</h4>
-                <br />
-                <UnlockSecret />
-              </Card.Content>
-            </Card>
+            <h4>View your balance </h4>
+            <button onClick={this.getBalance}>View </button>
+            <p>You have {this.state.balance} tokens</p>
 
-              <Card color="yellow" header="Read a Secret Message">
-                  <Card.Content>
-                      <h4>I hope you paid to unlock it!</h4>
-                      <br />
-                      <ReadSecret />
-                  </Card.Content>
-              </Card>
+            <h4>View funds raised so far </h4>
+            <button onClick={this.getWei}>View </button>
+            <p>So far we raised {this.state.wei} ether</p>
 
-              <Card color="purple" header="Unlock a Secret">
-                  <Card.Content>
-                      <h4>Lists number and names of players</h4>
-                      <br />
-                      <ListPlayers />
-                  </Card.Content>
-              </Card>
-
-              <Card color="black" header="Unlock a Secret">
-                  <Card.Content>
-                      <h4>Total ether players paid to see my secret message.</h4>
-                      <br />
-                      <GetBalance />
-                  </Card.Content>
-              </Card>
-          </Card.Group>
+            <h1>{this.state.message}</h1>
         </div>
-      </Container>
+
+
     );
   }
 }
