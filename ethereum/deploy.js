@@ -14,7 +14,7 @@ const bytecodeCrowdCoin = require("../ethereum/build/SmartCrowdFundingBytecode.j
 
 const provider = new HDWalletProvider(
   "region lemon visual town meat stay clever noise april two betray aware",
-  "https://rinkeby.infura.io/v3/4a2069c6a06949bfa53e81bbf6d7f210"
+  "https://rinkeby.infura.io/v3/80ef6acc135e44f9bb397db5707c1684"
 );
 
 const web3 = new Web3(provider);
